@@ -16,7 +16,10 @@ import br.com.projeto.padraoProjetoDecorator.service.PedirMacarronadaQueijo;
 
 @SpringBootTest
 class DecoratorApplicationTests {
-
+	
+	private static final double VALOR_ESPERADO_MACARRONADA_BOLONHESA_BACON_QUEIJO = 27d;
+	private static final double VALOR_ESPERADO_MACARRONADA_BACON_QUEIJO = 17d;
+	private static final double VALOR_ESPERADO_MACARRONADA_BOLONHESA_QUEIJO = 25d;
 	private static final double VALOR_ESPERADO_MACARRONADA_BOLONHESA_BACON = 22d;
 	private static final double VALOR_ESPERADO_MACARRONADA_QUEIJO = 15d;
 	private static final double VALOR_ESPERADO_MACARRONADA_BACON = 12d;
@@ -24,7 +27,7 @@ class DecoratorApplicationTests {
 	private static final double VALOR_ESPERADO_MACARRONADA = 10d;
 	private static final double VALOR_MACARRONADA = 10d;
 	
-	// Testes com de 2 combinações
+	// Testes com 2 combinações
 
 	@Test
 	void calcularValorDaMacarronada_quandoSucesso() {
@@ -92,6 +95,46 @@ class DecoratorApplicationTests {
 		assertEquals(VALOR_ESPERADO_MACARRONADA_BOLONHESA_BACON, nota.getPedido().getValor());
 
 	}
+		
+	@Test
+	void calcularValorDaMacarronadaBolonhesaQueijo_quandoSucesso() {
 
+		Cliente cliente = new Cliente(6, "Danilo");
+		Pedido pedido = new Pedido(6, VALOR_MACARRONADA, cliente);
 
+		PedirMacarronadaInterface pedirMacarronadaInterface = new PedirMacarronadaQueijo(new PedirMacarronadaBolonhesa(new PedirMacarronada()));
+		Nota nota = pedirMacarronadaInterface.criarNota(cliente, pedido);
+
+		assertEquals(VALOR_ESPERADO_MACARRONADA_BOLONHESA_QUEIJO, nota.getPedido().getValor());
+
+	}
+		
+	@Test
+	void calcularValorDaMacarronadaBaconQueijo_quandoSucesso() {
+
+		Cliente cliente = new Cliente(6, "Danilo");
+		Pedido pedido = new Pedido(6, VALOR_MACARRONADA, cliente);
+
+		PedirMacarronadaInterface pedirMacarronadaInterface = new PedirMacarronadaQueijo(new PedirMacarronadaBacon(new PedirMacarronada()));
+		Nota nota = pedirMacarronadaInterface.criarNota(cliente, pedido);
+
+		assertEquals(VALOR_ESPERADO_MACARRONADA_BACON_QUEIJO, nota.getPedido().getValor());
+
+	}
+	
+	// Testes com 4 combinações
+
+	@Test
+	void calcularValorDaMacarronadaBolonhesaBaconQueijo_quandoSucesso() {
+
+		Cliente cliente = new Cliente(6, "Danilo");
+		Pedido pedido = new Pedido(6, VALOR_MACARRONADA, cliente);
+
+		PedirMacarronadaInterface pedirMacarronadaInterface = new PedirMacarronadaQueijo(new PedirMacarronadaBacon(new PedirMacarronadaBolonhesa(new PedirMacarronada())));
+		Nota nota = pedirMacarronadaInterface.criarNota(cliente, pedido);
+
+		assertEquals(VALOR_ESPERADO_MACARRONADA_BOLONHESA_BACON_QUEIJO, nota.getPedido().getValor());
+
+	}
+	
 }
